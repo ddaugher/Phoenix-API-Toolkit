@@ -139,7 +139,7 @@ defmodule PhoenixApiToolkit.Ecto.Validators do
   def validate_order_by(changeset, orderable_fields) do
     with order_by when not is_nil(order_by) <- get_change(changeset, :order_by),
          {:captures, [dir, field]} <-
-           {:captures, Regex.run(@order_by_format, order_by, capture: :all_but_first)},
+           {:captures, Regex.scan(@order_by_format, order_by, capture: :all_but_first)},
          {:supported, true, _field} <- {:supported, field in orderable_fields, field} do
       put_change(changeset, :order_by, [{String.to_atom(dir), String.to_atom(field)}])
     else
